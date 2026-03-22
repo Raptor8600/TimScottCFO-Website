@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (method === 'default') {
                 sendUrl = `mailto:timscottcfo@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
             } else if (method === 'gmail') {
-                sendUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=timscottcfo@gmail.com&su=${subject}&body=${encodeURIComponent(bodyText)}`;
+                sendUrl = `https://mail.google.com/mail/u/0/?view=cm&fs=1&to=timscottcfo@gmail.com&su=${subject}&body=${encodeURIComponent(bodyText)}`;
             } else if (method === 'outlook') {
                 sendUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=timscottcfo@gmail.com&subject=${subject}&body=${encodeURIComponent(bodyText)}`;
             }
