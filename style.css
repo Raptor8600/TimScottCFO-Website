@@ -575,6 +575,17 @@ h4,
     box-shadow: 0 0 0 3px rgba(163, 163, 163, 0.2);
 }
 
+.form-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.form-actions .full-width {
+    grid-column: 1 / -1;
+}
+
 .btn-submit {
     background-color: var(--color-secondary);
     color: var(--color-white);

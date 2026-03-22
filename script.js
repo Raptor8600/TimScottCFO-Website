@@ -1,6 +1,3 @@
-/// Created by Raptor8600 ///
-
-
 document.addEventListener('DOMContentLoaded', () => {
     // Set Current Year in Footer
     const yearSpan = document.getElementById('year');
@@ -49,58 +46,68 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form Submission Handling
     const contactForm = document.getElementById('contactForm');
     const formStatus = document.getElementById('formStatus');
-    const submitBtn = contactForm ? contactForm.querySelector('.btn-submit') : null;
+    
+    const btnDefault = document.getElementById('btn-default');
+    const btnGmail = document.getElementById('btn-gmail');
+    const btnOutlook = document.getElementById('btn-outlook');
 
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Simple validation check
+        
+        const handleSend = (method, btnElement) => {
+            // Trigger native HTML5 validation UI if fields are missing
+            if (!contactForm.reportValidity()) return;
+            
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
+            const company = document.getElementById('company').value;
             const message = document.getElementById('message').value;
 
-            if (!name || !email || !message) {
-                formStatus.textContent = 'Please fill out all required fields.';
-                formStatus.style.color = '#ff4d4f'; // error red
-                return;
-            }
-
-            const company = document.getElementById('company').value;
-
-            // Simulate sending visual state
-            const btnText = submitBtn.querySelector('span');
-            const originalText = btnText.textContent;
-            btnText.textContent = 'Preparing Email...';
-            submitBtn.style.opacity = '0.7';
-            submitBtn.disabled = true;
-
-            // Generate mailto link
+            // Generate email content
             const subject = encodeURIComponent(`Website Inquiry from ${name}`);
             let bodyText = `Name: ${name}\nEmail: ${email}\n`;
             if (company) bodyText += `Company: ${company}\n`;
             bodyText += `\nMessage:\n${message}`;
 
-            const mailtoLink = `mailto:timscottcfo@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
+            let sendUrl = '';
+            if (method === 'default') {
+                sendUrl = `mailto:timscottcfo@gmail.com?subject=${subject}&body=${encodeURIComponent(bodyText)}`;
+            } else if (method === 'gmail') {
+                sendUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=timscottcfo@gmail.com&su=${subject}&body=${encodeURIComponent(bodyText)}`;
+            } else if (method === 'outlook') {
+                sendUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=timscottcfo@gmail.com&subject=${subject}&body=${encodeURIComponent(bodyText)}`;
+            }
+
+            // Simulate sending visual state
+            const btnText = btnElement.querySelector('span');
+            const originalText = btnText.textContent;
+            btnText.textContent = 'Preparing Draft...';
+            btnElement.style.opacity = '0.7';
+            
+            formStatus.textContent = 'Opening your email client...';
+            formStatus.style.color = '#10B981'; // success green
 
             // Trigger the email client draft
             setTimeout(() => {
-                window.location.href = mailtoLink;
-
-                formStatus.textContent = 'Opening your email client to send...';
-                formStatus.style.color = '#10B981'; // success green
-                // contactForm.reset();
-
+                // Open web links in a new tab, open mailto in the same window
+                if (method === 'default') {
+                    window.location.href = sendUrl;
+                } else {
+                    window.open(sendUrl, '_blank');
+                }
+                
                 // Reset Button
                 btnText.textContent = originalText;
-                submitBtn.style.opacity = '1';
-                submitBtn.disabled = false;
+                btnElement.style.opacity = '1';
 
                 // Clear status message after a few seconds
                 setTimeout(() => {
                     formStatus.textContent = '';
-                }, 5000);
-            }, 800);
-        });
+                }, 4000);
+            }, 600);
+        };
+
+        if (btnDefault) btnDefault.addEventListener('click', () => handleSend('default', btnDefault));
+        if (btnGmail) btnGmail.addEventListener('click', () => handleSend('gmail', btnGmail));
+        if (btnOutlook) btnOutlook.addEventListener('click', () => handleSend('outlook', btnOutlook));
     }
 });
