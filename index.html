@@ -319,10 +319,17 @@
                         <textarea id="message" name="message" rows="5" required
                             placeholder="How can I assist you?"></textarea>
                     </div>
-                    <button type="submit" class="btn-submit">
-                        <span>Send Message</span>
-                        <span class="loader" style="display: none;"></span>
-                    </button>
+                    <div class="form-actions">
+                        <button type="button" class="btn-submit full-width" id="btn-default">
+                            <span>Send using Default App</span>
+                        </button>
+                        <button type="button" class="btn-submit" id="btn-gmail">
+                            <span>Send via Gmail</span>
+                        </button>
+                        <button type="button" class="btn-submit" id="btn-outlook">
+                            <span>Send via Outlook</span>
+                        </button>
+                    </div>
                     <div class="form-status" id="formStatus"></div>
                 </form>
             </div>
